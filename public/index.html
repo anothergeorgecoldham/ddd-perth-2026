@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111b2b">
+  <meta name="description" content="Audience notes and visual guide to George Coldham’s DDD Perth talk on why passkeys make sense for humans.">
+  <title>Authentication for humans — DDD Perth audience guide</title>
+  <style>
+    :root { color-scheme: light; --ink:#182130; --muted:#566273; --paper:#f4f0e8; --white:#fffdf8; --night:#111b2b; --copper:#c46b45; --gold:#e7c080; --line:#d9d2c5; --soft:#ebe5d9; --max:1160px; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:17px/1.62 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    a { color:#874320; text-underline-offset:.18em; }
+    a:hover { color:#53290f; }
+    a:focus-visible, button:focus-visible { outline:3px solid #146c9b; outline-offset:3px; }
+    .skip-link { position:absolute; left:-9999px; top:1rem; padding:.7rem 1rem; background:white; color:black; z-index:10; }
+    .skip-link:focus { left:1rem; }
+    .topbar { color:#fff; background:var(--night); border-bottom:4px solid var(--copper); }
+    .topbar-inner { max-width:var(--max); margin:auto; padding:1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .brand { color:#fff; font-size:.82rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; }
+    .toplinks { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:.75rem 1.1rem; }
+    .toplinks a { color:#f7ead7; font-size:.9rem; }
+    .print-button { border:1px solid #b9c2cf; border-radius:999px; padding:.55rem .85rem; color:#fff; background:transparent; font:inherit; font-size:.85rem; cursor:pointer; }
+    .hero { color:white; background:linear-gradient(125deg,#111b2b 0%,#1e3047 65%,#382b2b 100%); padding:clamp(3.25rem,8vw,6.5rem) 1.5rem 4.5rem; }
+    .hero-inner { max-width:var(--max); margin:auto; }
+    .eyebrow { margin:0 0 .8rem; color:var(--copper); font-size:.76rem; font-weight:800; letter-spacing:.15em; text-transform:uppercase; }
+    .hero .eyebrow { color:var(--gold); }
+    h1,h2,h3 { font-family:Georgia,"Times New Roman",serif; font-weight:500; line-height:1.12; }
+    h1 { max-width:850px; margin:0; font-size:clamp(2.7rem,7vw,5.2rem); letter-spacing:-.035em; }
+    .hero .subtitle { max-width:720px; margin:1.2rem 0 0; color:#e7eaf0; font-size:clamp(1.12rem,2.3vw,1.4rem); }
+    .hero .core-idea { max-width:770px; margin:2rem 0 0; padding:1rem 1.2rem; border-left:3px solid var(--gold); background:#ffffff0b; color:#fff9ed; font-family:Georgia,"Times New Roman",serif; font-size:1.23rem; }
+    .hero-meta { margin-top:1.7rem; color:#c8d0dc; font-size:.9rem; }
+    .guide-nav { background:var(--white); border-bottom:1px solid var(--line); }
+    .guide-nav-inner { max-width:var(--max); margin:auto; padding:.8rem 1.5rem; display:flex; gap:.6rem 1.2rem; flex-wrap:wrap; }
+    .guide-nav a { color:var(--ink); font-size:.88rem; font-weight:650; text-decoration:none; }
+    main { max-width:var(--max); margin:auto; padding:2.5rem 1.5rem 5rem; }
+    .quick-note { margin:0 0 2.5rem; padding:1.2rem 1.35rem; border:1px solid var(--line); border-left:4px solid var(--copper); border-radius:0 12px 12px 0; background:var(--white); }
+    .quick-note p { margin:.25rem 0; }
+    .chapter { padding:2.4rem 0 1rem; scroll-margin-top:1rem; }
+    .chapter + .chapter { margin-top:2.5rem; border-top:1px solid var(--line); }
+    .chapter-heading { max-width:760px; margin-bottom:1.5rem; }
+    h2 { margin:.2rem 0 .75rem; font-size:clamp(2rem,4.5vw,3.2rem); letter-spacing:-.025em; }
+    .intro { margin:0; color:var(--muted); font-size:1.08rem; }
+    .slide-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.2rem; }
+    .slide-card { min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:14px; background:var(--white); box-shadow:0 7px 22px #181f2a0b; break-inside:avoid; }
+    .image-link { display:block; background:#101a2a; }
+    .image-link img { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; }
+    .card-copy { padding:1.15rem 1.3rem 1.25rem; }
+    .slide-index { margin:0 0 .4rem !important; color:#824728 !important; font-size:.72rem !important; font-weight:800; letter-spacing:.14em; }
+    h3 { margin:.25rem 0 .75rem; font-size:1.45rem; }
+    .card-copy p { margin:.55rem 0; }
+    .takeaway { padding:.7rem .8rem; border-radius:7px; background:var(--soft); font-size:.94rem; }
+    .mechanism { margin:1.8rem 0 0; padding:1.3rem; border-radius:12px; background:var(--night); color:#f8f1e5; }
+    .mechanism h3 { margin:0 0 1rem; color:#f6d6a5; }
+    .flow-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+    .flow { padding:1rem; border:1px solid #ffffff2a; border-radius:9px; background:#ffffff08; }
+    .flow h4 { margin:0 0 .55rem; color:#fff; font-size:1rem; }
+    .flow ol { margin:.3rem 0 0; padding-left:1.4rem; }
+    .flow li { margin:.35rem 0; color:#e0e5ed; }
+    .domain-demo { margin-top:1.4rem; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; }
+    .domain-demo div { padding:1rem; border-radius:9px; background:#fffdf8; color:var(--ink); text-align:center; }
+    .domain-demo small { display:block; margin-bottom:.25rem; color:var(--muted); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .domain-demo code { font-size:clamp(1rem,2vw,1.4rem); font-weight:750; }
+    .checklist { margin:1.5rem 0; padding:1.3rem 1.5rem; border:1px solid var(--line); border-radius:12px; background:var(--white); }
+    .checklist h3 { margin-top:0; }
+    .checklist li { margin:.4rem 0; }
+    .references { padding:2.5rem 0 0; border-top:1px solid var(--line); }
+    .reference-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem 1.5rem; padding:0; list-style:none; }
+    .reference-list li { padding:.75rem 0; border-bottom:1px solid var(--line); }
+    .reference-list a { font-weight:700; }
+    .reference-list span { display:block; margin-top:.2rem; color:var(--muted); font-size:.88rem; }
+    .glossary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem 1.3rem; }
+    .glossary div { padding:.75rem 0; border-bottom:1px solid var(--line); }
+    .glossary dt { font-weight:800; }
+    .glossary dd { margin:.25rem 0 0; color:var(--muted); }
+    footer { color:#e6e9ee; background:var(--night); }
+    .footer-inner { max-width:var(--max); margin:auto; padding:2rem 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+    .footer-inner p { margin:.2rem 0; }
+    .footer-inner a { color:#f6d6a5; }
+    @media (max-width:760px) { body { font-size:16px; } .topbar-inner { align-items:flex-start; flex-direction:column; } .toplinks { justify-content:flex-start; } main { padding-right:1rem; padding-left:1rem; } .guide-nav-inner { padding-right:1rem; padding-left:1rem; gap:.5rem 1rem; } .slide-grid,.flow-grid,.reference-list,.glossary { grid-template-columns:1fr; } .chapter { padding-top:1.7rem; } .card-copy { padding:1rem; } .hero { padding-left:1rem; padding-right:1rem; } }
+    @media print { @page { margin:14mm; } body { background:#fff; color:#111; font-size:10.5pt; } .topbar,.guide-nav,footer,.print-button,.skip-link { display:none !important; } .hero { padding:0 0 1rem; color:#111; background:#fff; border-bottom:2px solid #333; } .hero .eyebrow,.hero .subtitle,.hero .core-idea,.hero-meta { color:#222; } .hero .core-idea { background:#fff; border-color:#333; } h1 { font-size:30pt; } main { max-width:none; padding:1rem 0; } .quick-note,.slide-card,.checklist { box-shadow:none; background:#fff; border-color:#aaa; } .slide-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8mm; } .slide-card { break-inside:avoid; } .chapter { break-before:auto; padding-top:1rem; } .chapter-heading { break-after:avoid; } .mechanism { color:#111; background:#f1f1f1; border:1px solid #777; print-color-adjust:exact; } .mechanism h3,.flow h4,.flow li { color:#111; } .flow { border-color:#777; background:#fff; } .domain-demo div { border:1px solid #aaa; } a { color:#111; text-decoration:none; } .references a[href^="http"]::after { content:" (" attr(href) ")"; font-size:8pt; font-weight:400; overflow-wrap:anywhere; } img { print-color-adjust:exact; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the guide</a>
+  <header class="topbar"><div class="topbar-inner">
+    <a class="brand" href="#main">DDD Perth · 2026</a>
+    <div class="toplinks"><a href="#human-problem">The problem</a><a href="#passkey-proof">How it works</a><a href="#implementation">For builders</a><a href="#references">References</a><button class="print-button" type="button" onclick="window.print()">Print / save PDF</button></div>
+  </div></header>
+  <section class="hero"><div class="hero-inner">
+    <p class="eyebrow">DDD Perth · Audience guide</p>
+    <h1>Authentication for humans</h1>
+    <p class="subtitle">Why passkeys finally make sense — a visual companion to George Coldham’s talk.</p>
+    <p class="core-idea">Authentication gets stronger when we stop asking people to manage reusable secrets.</p>
+    <p class="hero-meta">Follow the 20-slide story, revisit the key ideas, and keep the implementation references.</p>
+  </div></section>
+  <nav class="guide-nav" aria-label="Guide sections"><div class="guide-nav-inner"><a href="#human-problem">The human problem</a><a href="#passkey-proof">A different proof</a><a href="#phishing-reuse">The security difference</a><a href="#implementation">Building and operating</a><a href="#takeaway">The takeaway</a></div></nav>
+  <main id="main">
+    <aside class="quick-note"><p><strong>Keep the claim precise.</strong> Passkeys resist credential phishing and password reuse through public-key credentials scoped to a relying party. They do not eliminate account recovery risks, compromised devices, stolen sessions, or every form of social engineering.</p></aside>
+    <section class="chapter" id="human-problem" aria-labelledby="human-problem-title">
+    <div class="chapter-heading"><p class="eyebrow">01 · The human problem</p><h2 id="human-problem-title">Authentication asks too much of people</h2><p class="intro">Password sign-in makes people repeatedly recognise fakes, choose the right secret, and judge prompts under pressure. These first slides explain why that burden is a design problem.</p></div>
+    <div class="slide-grid"><article class="slide-card" id="slide-1">
+      <a class="image-link" href="./assets/slide-01.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 1 image">
+        <img src="./assets/slide-01.webp" alt="A person in a rust-red coat looks across a vast painted city toward one lit doorway." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 01</p><h3>Authentication for humans</h3><p>Passkeys change the work authentication asks of people. Instead of expecting everyone to remember reusable secrets, inspect every URL, and judge every prompt perfectly, the system can prove which service is being accessed.</p><p class="takeaway"><strong>Remember:</strong> Design the authentication system around people, not perfect people around the system.</p></div>
+    </article><article class="slide-card" id="slide-2">
+      <a class="image-link" href="./assets/slide-02.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 2 image">
+        <img src="./assets/slide-02.webp" alt="A lone person stands before a vast city of repeated login doors." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 02</p><h3>Authentication keeps failing</h3><p>Every sign-in asks someone to make security decisions while they are trying to do something else. When success depends on noticing every cue, every time, ordinary interruptions become part of the threat model.</p><p class="takeaway"><strong>Remember:</strong> Repeated human vigilance is a brittle security control.</p></div>
+    </article><article class="slide-card" id="slide-3">
+      <a class="image-link" href="./assets/slide-03.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 3 image">
+        <img src="./assets/slide-03.webp" alt="A hand reaches toward monumental login doors with prompts asking whether the site, password, and prompt are right." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 03</p><h3>The questions at the door</h3><p>Password sign-in repeatedly asks: Is this the real site? Is this the right password? Is this code or approval part of the sign-in I started? Attackers build familiar-looking flows and urgency around those decisions.</p><p class="takeaway"><strong>Remember:</strong> Move as much security work as possible into the protocol.</p></div>
+    </article><article class="slide-card" id="slide-4">
+      <a class="image-link" href="./assets/slide-04.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 4 image">
+        <img src="./assets/slide-04.webp" alt="A person passes a small secret through a shadowed doorway to a recipient." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 04</p><h3>A secret both sides know</h3><p>A password is a shared secret: the user presents it and the service checks it against a protected verifier. A well-run service stores a salted password hash, not plaintext, but a convincing fake page can still trick a person into disclosing the password.</p><p class="takeaway"><strong>Remember:</strong> The weakness is the reusable secret users must present.</p></div>
+    </article><article class="slide-card" id="slide-5">
+      <a class="image-link" href="./assets/slide-05.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 5 image">
+        <img src="./assets/slide-05.webp" alt="Hands hold a key and an additional lock amid a crowded authentication hall." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 05</p><h3>More layers, same secret</h3><p>Password managers help people create and use unique passwords. MFA adds protection, and phishing-resistant methods are stronger than codes or push approvals. These controls still matter wherever passwords remain; passkeys change the underlying proof.</p><p class="takeaway"><strong>Remember:</strong> Keep useful safeguards, while reducing dependence on passwords.</p></div>
+    </article></div>
+  </section>
+<section class="chapter" id="passkey-proof" aria-labelledby="passkey-proof-title">
+    <div class="chapter-heading"><p class="eyebrow">02 · A different proof</p><h2 id="passkey-proof-title">Passkeys change what the service verifies</h2><p class="intro">A passkey lets an authenticator sign a fresh challenge with a credential scoped to the service. Local unlock and remote proof are separate steps.</p></div>
+    <div class="slide-grid"><article class="slide-card" id="slide-6">
+      <a class="image-link" href="./assets/slide-06.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 6 image">
+        <img src="./assets/slide-06.webp" alt="A hand opens a compact brass authenticator containing a glowing key-like mechanism." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 06</p><h3>Proof, not a password</h3><p>A passkey uses a public/private key pair. During sign-in, the service sends a fresh challenge. The authenticator signs it, and the service verifies the response with the registered public key. The private key is not sent to the website; a passkey provider may sync protected key material between a user’s devices.</p><p class="takeaway"><strong>Remember:</strong> The service receives proof of possession, not a reusable secret.</p></div>
+    </article><article class="slide-card" id="slide-7">
+      <a class="image-link" href="./assets/slide-07.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 7 image">
+        <img src="./assets/slide-07.webp" alt="A person unlocks a phone locally with a fingerprint; the glowing mark stays on the device." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 07</p><h3>Local unlock, remote proof</h3><p>A face, fingerprint, PIN, or other local method can unlock an authenticator. The website receives a WebAuthn response, not a face image or fingerprint. User verification may be requested by policy, and the service must validate the returned result.</p><p class="takeaway"><strong>Remember:</strong> The biometric unlocks the key; it is not the credential sent to the site.</p></div>
+    </article></div>
+  </section>
+<section class="chapter" id="phishing-reuse" aria-labelledby="phishing-reuse-title">
+    <div class="chapter-heading"><p class="eyebrow">03 · The security difference</p><h2 id="phishing-reuse-title">Fake sites and reused passwords lose their leverage</h2><p class="intro">Origin and RP ID scoping make a lookalike domain a mismatch, while distinct credentials remove the portable password that fuels credential stuffing.</p></div>
+    <div class="slide-grid"><article class="slide-card" id="slide-8">
+      <a class="image-link" href="./assets/slide-08.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 8 image">
+        <img src="./assets/slide-08.webp" alt="Two nearly identical login doors display example.com and evil-example.com; a person approaches them." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 08</p><h3>A fake door can look real</h3><p>The two login doors look alike. Their addresses differ: example.com and evil-example.com. A person in a hurry on a small screen can miss a subtle difference, even when they know what to look for.</p><p class="takeaway"><strong>Remember:</strong> Do not make URL inspection the only barrier against phishing.</p></div>
+    </article><article class="slide-card" id="slide-9">
+      <a class="image-link" href="./assets/slide-09.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 9 image">
+        <img src="./assets/slide-09.webp" alt="The same pair of doors show example.com and evil-example.com, with a passkey match at one and no match at the other." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 09</p><h3>The passkey does not match the fake site</h3><p>A credential is scoped to its relying-party identifier (RP ID). The browser checks the requesting origin, and the service must validate the expected origin, RP ID, challenge, and response. A credential for example.com will not authenticate to evil-example.com. This resists credential phishing, but it does not prevent every attack on an account or device.</p><p class="takeaway"><strong>Remember:</strong> The system checks the site context instead of asking the user to spot every fake.</p></div>
+    </article><article class="slide-card" id="slide-10">
+      <a class="image-link" href="./assets/slide-10.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 10 image">
+        <img src="./assets/slide-10.webp" alt="A person carries one key toward several doors, showing how a reused secret connects accounts." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 10</p><h3>One reused password, many doors</h3><p>Credential stuffing is the use of credentials obtained in one context against other services. Reusing a password makes that reuse possible. This is an understandable response to too many accounts, not a reason to blame the person.</p><p class="takeaway"><strong>Remember:</strong> Reusable passwords can connect otherwise separate accounts.</p></div>
+    </article><article class="slide-card" id="slide-11">
+      <a class="image-link" href="./assets/slide-11.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 11 image">
+        <img src="./assets/slide-11.webp" alt="A hand uses one distinct key for one service door." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 11</p><h3>One passkey per service</h3><p>Each relying party registers its own credential. The public key stored by a service cannot sign in to another service, and it is not a replayable password. A breach can still expose account data, sessions, or recovery channels.</p><p class="takeaway"><strong>Remember:</strong> A passkey for one service is not a skeleton key for every service.</p></div>
+    </article><article class="slide-card" id="slide-12">
+      <a class="image-link" href="./assets/slide-12.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 12 image">
+        <img src="./assets/slide-12.webp" alt="A person walks away from monumental login doors and back toward the task ahead." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 12</p><h3>Back to the task</h3><p>Passkeys reduce some of the memory work, password reuse, and visual judgment that sign-in has demanded. People still need secure devices, clear enrolment, usable recovery, and protected sessions.</p><p class="takeaway"><strong>Remember:</strong> A better division of work can make sign-in both easier and safer.</p></div>
+    </article></div>
+  </section>
+<section class="chapter" id="implementation" aria-labelledby="implementation-title">
+    <div class="chapter-heading"><p class="eyebrow">04 · Building and operating it</p><h2 id="implementation-title">Implementation choices still matter</h2><p class="intro">Registration, sign-in, credential storage, provider choice, enrolment, and recovery all need deliberate policy and testing.</p></div>
+    <div class="slide-grid"><article class="slide-card" id="slide-13">
+      <a class="image-link" href="./assets/slide-13.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 13 image">
+        <img src="./assets/slide-13.webp" alt="A person and an authenticator complete a challenge, create a credential, verify it, and store a public key." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 13</p><h3>Registration: create and store a public key</h3><p>The service creates a challenge and registration options. The browser invokes the authenticator, which creates a credential for the RP ID. The service validates the challenge, origin, RP ID, and response, then stores the credential ID and public key with the account.</p><p class="takeaway"><strong>Remember:</strong> Use a maintained WebAuthn library or identity platform for the ceremony.</p></div>
+    </article><article class="slide-card" id="slide-14">
+      <a class="image-link" href="./assets/slide-14.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 14 image">
+        <img src="./assets/slide-14.webp" alt="A user unlocks an authenticator while a service verifies a signed response." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 14</p><h3>Sign-in: unlock, sign, verify</h3><p>For each sign-in, the service issues a fresh, unpredictable challenge. The authenticator signs the ceremony data, and the service verifies the signature, challenge, origin, RP ID, and any required user-verification flags before creating a session.</p><p class="takeaway"><strong>Remember:</strong> Fresh challenges and complete server-side verification matter.</p></div>
+    </article><article class="slide-card" id="slide-15">
+      <a class="image-link" href="./assets/slide-15.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 15 image">
+        <img src="./assets/slide-15.webp" alt="An illustrated comparison shows SSH host-key and user authentication beside WebAuthn browser, origin, and challenge." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 15</p><h3>SSH and WebAuthn share a primitive, not a protocol</h3><p>SSH public-key authentication and WebAuthn both use public-key signatures. Their protocols define different trust contexts: SSH includes transport and host-key verification; WebAuthn uses the browser and authenticator and scopes a credential to a relying party and origin.</p><p class="takeaway"><strong>Remember:</strong> Shared cryptography does not make the protocols interchangeable.</p></div>
+    </article><article class="slide-card" id="slide-16">
+      <a class="image-link" href="./assets/slide-16.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 16 image">
+        <img src="./assets/slide-16.webp" alt="A side-by-side illustration compares a device-bound passkey with a synced passkey and provider devices." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 16</p><h3>Device-bound and synced passkeys</h3><p>A device-bound passkey stays with one authenticator, which can fit tighter custody requirements but makes replacement and backup planning essential. A synced passkey improves availability across devices; provider account security and recovery become part of the trust model.</p><p class="takeaway"><strong>Remember:</strong> Choose based on assurance, recovery, and the people who must use it.</p></div>
+    </article><article class="slide-card" id="slide-17">
+      <a class="image-link" href="./assets/slide-17.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 17 image">
+        <img src="./assets/slide-17.webp" alt="A phone scans a QR code on a laptop to complete a passkey sign-in across devices." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 17</p><h3>A phone can sign in to a laptop</h3><p>Cross-device authentication lets a nearby phone complete a passkey sign-in that began on a laptop. The laptop can receive an authenticated session without receiving or storing the phone’s passkey.</p><p class="takeaway"><strong>Remember:</strong> A QR sign-in flow is not the same as syncing a passkey.</p></div>
+    </article><article class="slide-card" id="slide-18">
+      <a class="image-link" href="./assets/slide-18.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 18 image">
+        <img src="./assets/slide-18.webp" alt="A developer marks a policy map with relying-party ID, allowed origins, and user verification." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 18</p><h3>You own the policy</h3><p>A platform or library handles the protocol details, but the application still owns decisions about RP ID, allowed origins, user verification, enrolment, account linking, and credential management. Treat changes to those settings as security and migration decisions.</p><p class="takeaway"><strong>Remember:</strong> Use mature implementation support, then configure and verify it carefully.</p></div>
+    </article><article class="slide-card" id="slide-19">
+      <a class="image-link" href="./assets/slide-19.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 19 image">
+        <img src="./assets/slide-19.webp" alt="A person prepares backup credentials, revokes a lost key, and tests the recovery path." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 19</p><h3>Make recovery usable before a key is lost</h3><p>Plan what happens when a device is lost or replaced. Offer appropriate backup credentials, make credential revocation clear, and test the fallback path. A recovery route that is much weaker than sign-in can become the easiest way around it.</p><p class="takeaway"><strong>Remember:</strong> Recovery is part of authentication, not an afterthought.</p></div>
+    </article></div>
+  </section>
+<section class="chapter" id="takeaway" aria-labelledby="takeaway-title">
+    <div class="chapter-heading"><p class="eyebrow">05 · The takeaway</p><h2 id="takeaway-title">Fewer passwords</h2><p class="intro">Passkeys do not solve every account risk. They remove some common password failure modes by design.</p></div>
+    <div class="slide-grid"><article class="slide-card" id="slide-20">
+      <a class="image-link" href="./assets/slide-20.webp" target="_blank" rel="noreferrer" aria-label="Open full-size slide 20 image">
+        <img src="./assets/slide-20.webp" alt="A person walks toward a bright open city, leaving password-era doors behind." loading="lazy" decoding="async" width="1440" height="810">
+      </a>
+      <div class="card-copy"><p class="slide-index">SLIDE 20</p><h3>Not better password advice. Fewer passwords.</h3><p>Passkeys are not magic and they do not end identity security work. They give us a better authentication primitive: service-scoped credentials and cryptographic proof instead of reusable secrets that people must carry between doors.</p><p class="takeaway"><strong>Remember:</strong> The human solution is to need fewer passwords.</p></div>
+    </article></div>
+  </section>
+    <section class="mechanism" aria-labelledby="flow-title">
+      <h3 id="flow-title">The two WebAuthn ceremonies</h3>
+      <div class="flow-grid">
+        <div class="flow"><h4>Registration · create the credential</h4><ol><li>The service creates a fresh challenge and RP options.</li><li>The browser asks an authenticator to create a credential for the RP ID.</li><li>The authenticator returns the credential ID and public key.</li><li>The service validates the response and stores the public key.</li></ol></div>
+        <div class="flow"><h4>Authentication · prove possession</h4><ol><li>The service issues a fresh, unpredictable challenge.</li><li>The authenticator signs the ceremony data, after any requested local verification.</li><li>The service checks the signature, challenge, expected origin, RP ID, and policy flags.</li><li>Only then does the service establish a session.</li></ol></div>
+      </div>
+      <div class="domain-demo" aria-label="Example of a relying-party mismatch"><div><small>Credential created for</small><code>example.com</code></div><div><small>Lookalike site</small><code>evil-example.com</code></div></div>
+    </section>
+    <section class="checklist" aria-labelledby="builder-title"><h3 id="builder-title">A practical checklist for teams</h3><ul>
+      <li>Use a maintained identity platform or WebAuthn server library; do not implement the cryptographic ceremony from scratch.</li>
+      <li>Set the RP ID and allowed origins deliberately. Validate the expected origin, RP ID, challenge, signature, and required flags.</li>
+      <li>Make enrolment, account linking, credential names, removal, and revocation understandable to users and support teams.</li>
+      <li>Plan for lost devices, provider recovery, backup credentials, migration, and fallback methods before rollout.</li>
+      <li>Test the full path on supported browsers and devices, including failure and recovery—not just a successful sign-in.</li>
+    </ul></section>
+    <section class="references" id="references" aria-labelledby="references-title"><p class="eyebrow">Read further</p><h2 id="references-title">Primary references</h2><p class="intro">Standards and practical guidance behind the technical details in this guide.</p>
+      <ul class="reference-list">
+        <li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">W3C · Web Authentication Level 3</a><span>The WebAuthn specification: credentials, ceremonies, RP IDs, origins, challenges, and verification.</span></li>
+        <li><a href="https://fidoalliance.org/passkeys/" target="_blank" rel="noreferrer">FIDO Alliance · Passkeys</a><span>Passkey concepts, synced and device-bound credentials, and cross-device sign-in.</span></li>
+        <li><a href="https://pages.nist.gov/800-63-4/sp800-63b.html" target="_blank" rel="noreferrer">NIST · SP 800-63B Revision 4</a><span>Authentication and authenticator management, including lifecycle and recovery considerations.</span></li>
+        <li><a href="https://www.cyber.gov.au/protect-yourself/secure-your-accounts/passkeys" target="_blank" rel="noreferrer">Australian Cyber Security Centre · Passkeys</a><span>Australian public guidance for passkey setup, local unlock, cross-device sign-in, and backups.</span></li>
+        <li><a href="https://www.rfc-editor.org/rfc/rfc4252" target="_blank" rel="noreferrer">IETF · RFC 4252: SSH Authentication Protocol</a><span>The SSH user-authentication protocol, including public-key authentication.</span></li>
+      </ul>
+    </section>
+    <section class="references" aria-labelledby="glossary-title"><p class="eyebrow">Quick definitions</p><h2 id="glossary-title">A small glossary</h2>
+      <dl class="glossary">
+        <div><dt>Authenticator</dt><dd>A device, security key, or credential manager that protects and uses a passkey.</dd></div>
+        <div><dt>Credential</dt><dd>The relying-party-specific public-key credential used in a WebAuthn ceremony.</dd></div>
+        <div><dt>Origin</dt><dd>The web origin making the request, including its scheme, host, and port.</dd></div>
+        <div><dt>RP ID</dt><dd>The relying-party identifier that scopes where a WebAuthn credential can be used.</dd></div>
+        <div><dt>User verification</dt><dd>A local authenticator check, such as a PIN or biometric, when requested by the relying party.</dd></div>
+        <div><dt>Synced passkey</dt><dd>A passkey made available across a user’s devices through a passkey provider.</dd></div>
+      </dl>
+    </section>
+  </main>
+  <footer><div class="footer-inner"><p><strong>Authentication for humans</strong><br>DDD Perth audience guide · George Coldham</p><p><a href="#main">Back to the guide</a></p></div></footer>
+</body>
+</html>
